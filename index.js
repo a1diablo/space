@@ -16,7 +16,6 @@ app.on('ready', () => {
     icon: path.join(__dirname,'public','images','favicon3.icns')
   });
   mainWindow.loadURL(`http://localhost:4172`);
-  mainWindow.maximize();
   mainWindow.show();
   mainWindow.on('closed', () => {
     mainWindow=null;
