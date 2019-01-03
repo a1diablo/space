@@ -92,6 +92,16 @@ export const startListening = (roomName) => {
   }
 }
 
+export const startSendingCards = (cards, roomName) => {
+  return (dispatch, getState) => {
+    const user = getState().auth;
+    return database.ref(`rooms/${roomName}/cards/${user.displayName}`).set({
+      displayName: user.displayName,
+      cards: cards
+    });
+  }
+};
+
 const isAlreadyAdded = (data, id) => {
   for (var key in data) {
     if (data[key].id === id) return true;
