@@ -54,7 +54,7 @@ export class RoomPage extends React.Component {
     desktopCapturer.getSources({ types: ['window'] }, (error, sources) => {
       if (error) throw error
       for (let i = 0; i < sources.length; ++i) {
-        if (sources[i].name.includes('Tournament')) {
+        if (sources[i].name.includes(this.roomName)) {
           navigator.mediaDevices.getUserMedia({
             audio: false,
             video: {
