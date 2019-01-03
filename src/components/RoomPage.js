@@ -85,7 +85,6 @@ export class RoomPage extends React.Component {
       canvas.width = video.width;
       canvas.height = video.height;
       var ctx = canvas.getContext('2d');
-      console.log(video.videoWidth, video.videoHeight);
       var cx = video.videoWidth / 3.845; //570; //canvas.width / 5;
       var cy = video.videoHeight / 3.08; //400; //3 * canvas.height / 4;
       var width = video.videoWidth / 10.95; //200;
@@ -115,7 +114,6 @@ export class RoomPage extends React.Component {
       database.ref(`rooms/${this.roomName}/cards/${card_info.displayName}`).on('value', (playerCards) => {
         this.state.imageSrcs[card_info.displayName] = playerCards.val().cards;
         this.setState({imageSrcs: this.state.imageSrcs});
-        console.log('Changing state should trigger component mount');
       })
     });
   }
