@@ -47,3 +47,9 @@ ipcMain.on('playNotif', (event, name, message) => {
     }
   );
 });
+
+ipcMain.on('getCurrentScaleFactor', (event) => {
+  var position = mainWindow.getBounds();
+  var scaleFactor = electron.screen.getDisplayNearestPoint({x: position.x, y: position.y}).scaleFactor;
+  event.returnValue = scaleFactor;
+});

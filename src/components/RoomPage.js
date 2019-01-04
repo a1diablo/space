@@ -4,6 +4,7 @@ import { startSendMessage, startLeaveRoom, startClearUnread, startSendingCards }
 import Messages from './Messages';
 import PeopleModal from './PeopleModal';
 import database from '../firebase/firebase';
+import { ipcRenderer } from 'electron';
 
 // const getMessages = () => {
 
@@ -81,14 +82,17 @@ export class RoomPage extends React.Component {
     video.srcObject = stream
     video.onloadedmetadata = (e) => video.play()
     setInterval(() => {
+      var scaleFactor = ipcRenderer.sendSync('getCurrentScaleFactor');
+      console.log('scaleFactor is: ', scaleFactor);
       var canvas = document.createElement('canvas');
       canvas.width = video.width;
       canvas.height = video.height;
       var ctx = canvas.getContext('2d');
-      var cx = video.videoWidth / 3.845; //570; //canvas.width / 5;
-      var cy = video.videoHeight / 3.08; //400; //3 * canvas.height / 4;
-      var width = video.videoWidth / 10.95; //200;
-      var height = video.videoHeight / 12.32; //100;
+      var ratio = 2.0 / scaleFactor; // Default 200% is assumed
+      var cx = video.videoWidth * ratio / 3.845 - (ratio - 1) * scaleFactor * 50; //570;
+      var cy = video.videoHeight * ratio / 3.08; //400;
+      var width = video.videoWidth * ratio / 10; //200;
+      var height = video.videoHeight * ratio / 12; //100;
       ctx.drawImage(video, cx, cy, width, height, 0, 0, canvas.width, canvas.height);
       var image = new Image();
       image.src = canvas.toDataURL();
