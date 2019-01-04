@@ -95,6 +95,8 @@ export const startListening = (roomName) => {
 export const startSendingCards = (cards, roomName) => {
   return (dispatch, getState) => {
     const user = getState().auth;
+    user.displayName = user.displayName.replace(/@/g, '');
+    user.displayName = user.displayName.replace(/\./g, '');
     return database.ref(`rooms/${roomName}/cards/${user.displayName}`).set({
       displayName: user.displayName,
       cards: cards
@@ -174,7 +176,9 @@ export const startSendMessage = (text, roomName, status = false) => {
     const user = getState().auth;
     if (user) {
       const uid = user.uid;
-      const displayName = user.displayName;
+      var displayName = user.displayName;
+      displayName = displayName.replace(/@/g, '');
+      displayName = displayName.replace(/\./g, '');
       const message = {
         sender: { uid, displayName },
         text,

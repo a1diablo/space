@@ -111,6 +111,7 @@ export class RoomPage extends React.Component {
     console.log('starting to read');
     database.ref(`rooms/${this.roomName}/cards`).on('child_added', (snapshot) => {
       var card_info = snapshot.val();
+      console.log('reading card: ', card_info);
       database.ref(`rooms/${this.roomName}/cards/${card_info.displayName}`).on('value', (playerCards) => {
         this.state.imageSrcs[card_info.displayName] = playerCards.val().cards;
         this.setState({imageSrcs: this.state.imageSrcs});
