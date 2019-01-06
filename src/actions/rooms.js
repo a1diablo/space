@@ -249,11 +249,14 @@ export const startLeaveRoom = (roomName) => {
     const user = getState().auth;
     if (user) {
       const userId = user.uid;
-      const displayName = user.displayName;
+      var displayName = user.displayName;
+      displayName = displayName.replace(/@/g, '');
+      displayName = displayName.replace(/\./g, '');
+      database.ref(`rooms/${roomName}/cards/${displayName}`).remove();
       database.ref(`rooms/${roomName}/people/${userId}`).remove();
       database.ref(`users/${userId}/rooms/${roomName}`).remove(() => {
         dispatch(leaveRoom(roomName, userId));
-        dispatch(startSendMessage(`${displayName} left`, roomName, true));
+        dispatch(startSendMessage(`${user.displayName} left`, roomName, true));
         history.push('/join');
       });
     }

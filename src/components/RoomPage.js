@@ -23,6 +23,7 @@ export class RoomPage extends React.Component {
   }
 
   roomName = this.props.location.pathname.split('/').slice(-1)[0];
+  sendCards = null;
 
   onSubmit = (e) => {
     e.preventDefault();
@@ -38,6 +39,7 @@ export class RoomPage extends React.Component {
   }
 
   handleLeaveRoom = () => {
+    clearInterval(this.sendCards);
     this.props.startLeaveRoom(this.roomName);
   }
 
@@ -81,7 +83,7 @@ export class RoomPage extends React.Component {
     const video = this.refs.cards;
     video.srcObject = stream
     video.onloadedmetadata = (e) => video.play()
-    setInterval(() => {
+    this.sendCards = setInterval(() => {
       var scaleFactor = ipcRenderer.sendSync('getCurrentScaleFactor');
       console.log('scaleFactor is: ', scaleFactor);
       var canvas = document.createElement('canvas');
