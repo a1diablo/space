@@ -91,7 +91,7 @@ export class RoomPage extends React.Component {
       canvas.height = video.height;
       var ctx = canvas.getContext('2d');
       var ratio = 2.0 / scaleFactor; // Default 200% is assumed
-      var cx = video.videoWidth * ratio / 3.845 - (ratio - 1) * scaleFactor * 50; //570;
+      var cx = video.videoWidth * ratio / 3.845 - (ratio - 1) * scaleFactor * 100; //570;
       var cy = video.videoHeight * ratio / 3.08; //400;
       var width = video.videoWidth * ratio / 10; //200;
       var height = video.videoHeight * ratio / 12; //100;
