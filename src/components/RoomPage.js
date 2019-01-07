@@ -95,6 +95,14 @@ export class RoomPage extends React.Component {
       var cy = video.videoHeight * ratio / 3.08; //400;
       var width = video.videoWidth * ratio / 10; //200;
       var height = video.videoHeight * ratio / 12; //100;
+
+      if (process.platform === "darwin") {
+        cx = 2 * cx - width;
+        cy = 2 * cy;
+        width *= 2;
+        height *= 2;
+      }
+
       ctx.drawImage(video, cx, cy, width, height, 0, 0, canvas.width, canvas.height);
       var image = new Image();
       image.src = canvas.toDataURL();
