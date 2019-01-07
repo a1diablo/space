@@ -85,7 +85,6 @@ export class RoomPage extends React.Component {
     video.onloadedmetadata = (e) => video.play()
     this.sendCards = setInterval(() => {
       var scaleFactor = ipcRenderer.sendSync('getCurrentScaleFactor');
-      console.log('scaleFactor is: ', scaleFactor);
       var canvas = document.createElement('canvas');
       canvas.width = video.width;
       canvas.height = video.height;
@@ -96,7 +95,8 @@ export class RoomPage extends React.Component {
       var width = video.videoWidth * ratio / 10; //200;
       var height = video.videoHeight * ratio / 12; //100;
 
-      if (process.platform === "darwin") {
+      const electron = require('electron')
+      if (electron.remote.process.platform === "darwin") {
         cx = 2 * cx - width;
         cy = 2 * cy;
         width *= 2;
