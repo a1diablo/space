@@ -24,6 +24,7 @@ export class RoomPage extends React.Component {
 
   roomName = this.props.location.pathname.split('/').slice(-1)[0];
   sendCards = null;
+  gLastImageHash = 0;
 
   onSubmit = (e) => {
     e.preventDefault();
@@ -86,8 +87,10 @@ export class RoomPage extends React.Component {
     this.sendCards = setInterval(() => {
       var scaleFactor = ipcRenderer.sendSync('getCurrentScaleFactor');
       var canvas = document.createElement('canvas');
-      canvas.width = video.width;
-      canvas.height = video.height;
+      //canvas.width = video.width;
+      //canvas.height = video.height;
+      canvas.width = 200;
+      canvas.height = 100;
       var ctx = canvas.getContext('2d');
       var ratio = 2.0 / scaleFactor; // Default 200% is assumed
       var cx = video.videoWidth * ratio / 3.845 - (ratio - 1) * scaleFactor * 100; //570;
@@ -106,16 +109,34 @@ export class RoomPage extends React.Component {
       ctx.drawImage(video, cx, cy, width, height, 0, 0, canvas.width, canvas.height);
       var image = new Image();
       image.src = canvas.toDataURL();
-      //console.log(image.src);
+	  var imageHash = this.getHashCode(image.src);
+	  if (imageHash == this.gLastImageHash) {
+	    return;
+	  }
+	  this.gLastImageHash = imageHash;
+
       this.props.startSendingCards(image.src, this.roomName);
-    }, 3000)
+    }, 5000)
 
     this.startReadingCards();
 
+	  /*
     Object.entries(this.state.imageSrcs).map(([name, imgSrc]) => {
       console.log("Hello ", name);
     })
+	*/
   }
+
+  getHashCode(img) {
+	  var hash = 0, i, chr;
+	  if (img.length === 0) return hash;
+	  for (i = 0; i < img.length; i++) {
+		  chr   = img.charCodeAt(i);
+		  hash  = ((hash << 5) - hash) + chr;
+		  hash |= 0; // Convert to 32bit integer
+	  }
+	  return hash;
+  };
 
   handleError(e) {
     console.log(e)
